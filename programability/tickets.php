@@ -1,4 +1,7 @@
 <?php 
+    require_once('api-keys.php');
+    require_once('database-login.php');
+
     $json = exec_curl();
     $event_count = sizeof($json["events"]);
     $sql_query = "";
@@ -22,16 +25,7 @@
             exec_query($sql_query);
         }
     }
-    // if($json["events"][$j]["venue"]["name"] == "TD Garden")
-    // print_r("Event ID  : " .$json["events"][$j]["id"] . "\n");
-    // print_r("Team  ID  : " .$json["events"][$j]["performers"][0]["primary"] . "\n");
-    // print_r("     Match up  : " .$json["events"][$j]["title"] . "\n");
-    // print_r("     Venue     : " .$json["events"][$j]["venue"]["name"] . " " . $json["events"][$j]["venue"]["extended_address"] . "\n");
-    // print_r("     Date      : " .$json["events"][$j]["datetime_local"] . "\n");
-    // print_r("     Popularity: " .$json["events"][$j]["score"] . "\n");
-    // print_r("     Avg Price : " .$json["events"][$j]["stats"]["average_price"] . "\n");
-    // print_r("     Low Price : " .$json["events"][$j]["stats"]["lowest_price"] . "\n");
-    // print_r("     Top Price : " .$json["events"][$j]["stats"]["highest_price"] . "\n");
+
     function prepare_date($date){
         return str_ireplace("T", " ", $date);
     }
@@ -85,8 +79,8 @@
     }
 
     function exec_curl(){
-        $client = 'NTU3MTMyNnwxNDcyNjgxMzAx';
-        $client_secret = 'ypO0cwm-VzN_8FZrMG1hV1zIilADcYFytnyHroNZ';
+        $client = client_key();
+        $client_secret = client_secret();
         $ch = curl_init(); 
         // curl_setopt($ch, CURLOPT_URL, "https://api.seatgeek.com/2/events/3375100?client_id={$client}&client_secret={$client_secret}&format=json"); 
         curl_setopt($ch, CURLOPT_URL, "https://api.seatgeek.com/2/events?performers.slug=boston-bruins&client_id={$client}&client_secret={$client_secret}&format=json&per_page=5000&sort=datetime_utc.asc"); 
@@ -97,6 +91,6 @@
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $output = curl_exec($ch); 
         curl_close($ch); 
-        return json_decode($output);
+        return json_decode($output,true);
     }
 ?>
