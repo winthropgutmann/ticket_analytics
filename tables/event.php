@@ -10,12 +10,11 @@
         ,avg_price int not null
         ,highest_price int not null
         ,score float not null
-        ,is_year smallint
-        ,is_month smallint
-        ,is_day smallint
-        ,is_hour smallint
-        ,PRIMARY KEY(event_id, is_year, is_month, is_day, is_hour)
+        ,insert_date datetime not null
     );
+
+// I dont think we want a primary key on this table, however a clustered index on event_id and insert_date might prove useful
+    
 /*
 need to figure out some way of updating multiple columns with a single trigger
  or better yet find a clever solution to only insert new events that dont currently
