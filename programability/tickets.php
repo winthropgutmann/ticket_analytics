@@ -1,6 +1,7 @@
 <?php 
     require_once('api-keys.php');
     require_once('database-login.php');
+    //require_once('rapid_update.php');
 
     $json = exec_curl();
     $event_count = sizeof($json["events"]);
@@ -22,7 +23,8 @@
                         ,$sql_query//appending query
                     );
         if(($j+1)%1000 == 0 || ($j+1) == $event_count){
-            exec_query($sql_query);
+            $result = exec_query($sql_query);
+            print_r($result);
         }
     }
 
@@ -30,22 +32,14 @@
         return str_ireplace("T", " ", $date);
     }
 
-    function exec_query($query){
-        $servername = "localhost";
-        $username = "root";
-        $password = "abithiw2itb";
-        $dbname = "tickets";
-        $conn = mysqli_connect($servername, $username, $password, $dbname);
-        // print_r($query);
-        if(!$conn)
-        {
-            die("Connection failed: " . mysqli_connect_error());
+    function game_type($event_title){
+
+        if(strpos($event_title, "Preseason:") !== false){
+            return "Preseason";
+        }elseif(strpos($event_title, "Playoff:") !== false){
+            return "Playoff";
         }else{
-            $result = mysqli_query($conn, $query);
-            if(!$result){
-                die("Query: {$query}\n\n\n" . mysqli_error($conn));
-            }
-            var_dump($result);
+            return "Regular";
         }
     }
 
