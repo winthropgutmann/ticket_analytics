@@ -90,7 +90,7 @@
         else
             $sql_query = $query . "\n\t,(\"{$event_id}\", \"{$match_up}\", \"" . prepare_date($date) . "\", \"{$home}\", \"{$away}\", \"{$venue}\", {$low}, {$avg}, {$high}, {$score}, \"{$insert_date}\", \"" . game_type($match_up) ."\")";
 
-        return $sql_query;    //date("Y-m-d h:i:sa", $d);
+        return $sql_query;
     }
 
     function exec_curl(){
