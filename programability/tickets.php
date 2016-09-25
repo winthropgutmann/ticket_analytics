@@ -23,27 +23,13 @@
                         ,$sql_query//appending query
                     );
         if(($j+1)%1000 == 0 || ($j+1) == $event_count){
-            exec_query($sql_query);
+            $result = exec_query($sql_query);
+            print_r($result);
         }
     }
 
     function prepare_date($date){
         return str_ireplace("T", " ", $date);
-    }
-
-    function exec_query($query){
-        $db = database_login();
-        $conn = mysqli_connect($db["servername"], $db["username"], $db["password"], $db["dbname"]);
-        if(!$conn)
-        {
-            die("Connection failed: " . mysqli_connect_error());
-        }else{
-            $result = mysqli_query($conn, $query);
-            if(!$result){
-                die("Query: {$query}\n\n\n" . mysqli_error($conn));
-            }
-            var_dump($result);
-        }
     }
 
     function game_type($event_title){
