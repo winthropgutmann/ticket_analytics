@@ -49,6 +49,17 @@
         }
     }
 
+    function game_type($event_title){
+
+        if(strpos($event_title, "Preseason:") !== false){
+            return "Preseason";
+        }elseif(strpos($event_title, "Playoff:") !== false){
+            return "Playoff";
+        }else{
+            return "Regular";
+        }
+    }
+
     function build_query($num, $event_id, $match_up, $venue, $date, $score, $low, $avg, $high, $query){
         $teams = explode(" at ", $match_up);
         $home = trim($teams[1]);
@@ -56,6 +67,8 @@
         if (strpos($away, "Preseason:") !== false){
             $away = trim(str_replace("Preseason:", "", $away));
         }
+
+        $insert_date = date("Y-m-d h:i:s");
 
         if(($num+1)%1000 == 0 || ($num) == 0)
             $sql_query = "insert into event(
@@ -69,13 +82,15 @@
                 ,avg_price
                 ,highest_price
                 ,score
+                ,insert_date
+                ,game_type
             )
             values
-            (\"{$event_id}\", \"{$match_up}\", \"". prepare_date($date) ."\", \"{$home}\", \"{$away}\", \"{$venue}\", {$low}, {$avg}, {$high}, {$score})";
+            (\"{$event_id}\", \"{$match_up}\", \"". prepare_date($date) ."\", \"{$home}\", \"{$away}\", \"{$venue}\", {$low}, {$avg}, {$high}, {$score}, \"{$insert_date}\", \"" . game_type($match_up) ."\")";
         else
-            $sql_query = $query . "\n\t,(\"{$event_id}\", \"{$match_up}\", \"" . prepare_date($date) . "\", \"{$home}\", \"{$away}\", \"{$venue}\", {$low}, {$avg}, {$high}, {$score})";
+            $sql_query = $query . "\n\t,(\"{$event_id}\", \"{$match_up}\", \"" . prepare_date($date) . "\", \"{$home}\", \"{$away}\", \"{$venue}\", {$low}, {$avg}, {$high}, {$score}, \"{$insert_date}\", \"" . game_type($match_up) ."\")";
 
-        return $sql_query;    
+        return $sql_query;    //date("Y-m-d h:i:sa", $d);
     }
 
     function exec_curl(){

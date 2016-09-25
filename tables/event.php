@@ -11,10 +11,11 @@
         ,highest_price int not null
         ,score float not null
         ,insert_date datetime not null
+        ,game_type varchar(20) not null
     );
 
 // I dont think we want a primary key on this table, however a clustered index on event_id and insert_date might prove useful
-    
+
 /*
 need to figure out some way of updating multiple columns with a single trigger
  or better yet find a clever solution to only insert new events that dont currently
