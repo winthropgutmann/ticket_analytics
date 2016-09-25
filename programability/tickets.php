@@ -1,6 +1,7 @@
 <?php 
     require_once('api-keys.php');
     require_once('database-login.php');
+    //require_once('rapid_update.php');
 
     $json = exec_curl();
     $event_count = sizeof($json["events"]);
@@ -31,12 +32,8 @@
     }
 
     function exec_query($query){
-        $servername = "localhost";
-        $username = "root";
-        $password = "abithiw2itb";
-        $dbname = "tickets";
-        $conn = mysqli_connect($servername, $username, $password, $dbname);
-        // print_r($query);
+        $db = database_login();
+        $conn = mysqli_connect($db["servername"], $db["username"], $db["password"], $db["dbname"]);
         if(!$conn)
         {
             die("Connection failed: " . mysqli_connect_error());
