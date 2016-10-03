@@ -14,7 +14,7 @@
     }
 
 
-    function insert_event($count, $event_id, $title, $venue, $date, $query){
+    function insert_event($event_id, $title, $venue, $date, $query){
         if(strpos($title, " at ")){
             $teams = explode(" at ", $title);
             $home = trim($teams[1]);
@@ -22,8 +22,6 @@
             if (strpos($away, "Preseason:") !== false){
                 $away = trim(str_replace("Preseason:", "", $away));
             }
-
-            $insert_date = date("Y-m-d h:i:s");
 
             if($query == ""){
                 $sql_query = "insert into events(
@@ -56,7 +54,6 @@
         write_to_log($GLOBALS["file"], "WARNING: EVENTS TRUNCATED");
     $teams = exec_query("select team_name as team_name from teams");
 
-    $count = 0;
     $GLOBALS["warnings"] = 0;
     $GLOBALS["errors"] = 0;
     $event_query = "";
@@ -68,8 +65,7 @@
                 $unique_events[] = $season["events"][$s]["id"];
                 $event_query = 
                     insert_event(
-                         $count
-                        ,$season["events"][$s]["id"]
+                         $season["events"][$s]["id"]
                         ,$season["events"][$s]["title"]
                         ,$season["events"][$s]["venue"]["name"]
                         ,$season["events"][$s]["datetime_local"]
