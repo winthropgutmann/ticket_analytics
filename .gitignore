@@ -39,4 +39,5 @@ Thumbs.db
 # Special considerations#
 #########################
 programability/api-keys.php
+logs/
 programability/database-login.php
